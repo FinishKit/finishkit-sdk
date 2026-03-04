@@ -1,0 +1,52 @@
+{
+  "name": "@finishkit/sdk",
+  "version": "0.1.1",
+  "description": "TypeScript SDK for the FinishKit API - scan GitHub repos with LLM analysis, get prioritized findings and patches for AI-built web apps",
+  "homepage": "https://finishkit.app",
+  "author": "FinishKit <support@finishkit.app>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FinishKit/sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FinishKit/sdk/issues"
+  },
+  "keywords": [
+    "finishkit",
+    "ai",
+    "code-review",
+    "static-analysis",
+    "github",
+    "llm",
+    "scan",
+    "mcp"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.7.0"
+  }
+}
