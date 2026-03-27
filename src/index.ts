@@ -11,7 +11,7 @@ export class FinishKit {
   readonly runs: RunsResource
   private readonly client: ApiClient
 
-  constructor({ apiKey, baseUrl = 'https://finishkit.app' }: FinishKitOptions) {
+  constructor({ apiKey, baseUrl = 'https://www.finishkit.app' }: FinishKitOptions) {
     if (!apiKey || !apiKey.trim()) {
       throw new Error(
         'FinishKit: apiKey is required. Get one at https://finishkit.app/dashboard/settings?tab=developer',
