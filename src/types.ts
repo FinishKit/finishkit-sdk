@@ -175,3 +175,156 @@ export interface FinishKitOptions {
   apiKey: string
   baseUrl?: string
 }
+
+// ---------------------------------------------------------------------------
+// Intelligence Pack types
+// ---------------------------------------------------------------------------
+
+export type PackFocus = 'full' | 'security' | 'api' | 'deploy' | 'stability'
+export type PackTier = 'free' | 'pro' | 'team'
+export type AgentId = 'claude-code' | 'cursor' | 'codex' | 'windsurf' | 'custom'
+export type ProjectProvider = 'github' | 'gitlab' | 'local'
+
+export interface DetectedStack {
+  framework: string
+  frameworkVersion?: string
+  language: 'typescript' | 'javascript'
+  packageManager: 'npm' | 'pnpm' | 'yarn' | 'bun'
+  integrations: string[]
+  dependencies?: Record<string, string>
+}
+
+export interface PreScanDigest {
+  routeCount: number
+  routesWithoutAuth: number
+  envVarCount: number
+  hasTests: boolean
+  hasCi: boolean
+  configFlags: {
+    typescriptStrict: boolean
+    ignoreBuildErrors: boolean
+  }
+}
+
+export interface IntelligencePackRequest {
+  detectedStack: DetectedStack
+  preScanDigest?: PreScanDigest
+  focus?: PackFocus
+  orgId?: string
+  lastPackVersion?: string
+}
+
+export interface PackPass {
+  domain: 'security' | 'api_routing' | 'integrations' | 'infrastructure' | 'code_quality'
+  enabled: boolean
+  systemPrompt: string
+  fileSelectionHints: string[]
+  maxFiles: number
+  outputSchema: Record<string, unknown>
+}
+
+export interface FrameworkRule {
+  id: string
+  title: string
+  check: { type: string; pattern: string }
+  severity: string
+  category: string
+  fix: { description: string; codeTemplate?: string }
+}
+
+export interface IntelligenceAdvisory {
+  package: string
+  installedVersion: string
+  advisory: string
+  severity: string
+  impact: string
+  fix: string
+}
+
+export interface CommunityPatterns {
+  topFindings: Array<{ title: string; frequency: number; category: string; severity: string }>
+  benchmarks: { avgFindings: number; avgCritical: number }
+}
+
+export interface DocContext {
+  pitfalls: Array<{ title: string; description: string; affectedVersions: string; fix: string }>
+  deploymentChecklist: string[]
+}
+
+export interface OrgRule {
+  id: string
+  name: string
+  check: Record<string, unknown>
+  severity: string
+  autofix?: string
+}
+
+export interface IntelligencePackResponse {
+  packId: string
+  version: string
+  tier: PackTier
+  expiresAt: string
+  passes: PackPass[]
+  frameworkRules: FrameworkRule[]
+  advisories: IntelligenceAdvisory[]
+  communityPatterns?: CommunityPatterns
+  docContext?: DocContext
+  orgRules?: OrgRule[]
+  validationPass?: { systemPrompt: string; outputSchema: Record<string, unknown> }
+  mergeConfig: { maxFindings: number; severityOrder: string[] }
+}
+
+export interface PrTask {
+  title: string
+  description: string
+  acceptance_criteria: string[]
+  files_affected: string[]
+  suggested_approach: string
+  verification_commands: string[]
+}
+
+export interface SyncFinding {
+  category: FindingCategory
+  severity: FindingSeverity
+  confidence: number
+  title: string
+  detail_md: string
+  file_path: string
+  line_start?: number | null
+  line_end?: number | null
+  fingerprint: string
+  pr_task: PrTask
+  fixApplied?: boolean
+  fixVerified?: boolean
+}
+
+export interface FindingsSyncRequest {
+  project: {
+    name: string
+    repoOwner?: string
+    repoName?: string
+    provider: ProjectProvider
+  }
+  run: {
+    source: 'agent'
+    agentId: AgentId
+    packId: string
+    packVersion: string
+    runType: RunType
+    commitSha?: string
+    branchName?: string
+    startedAt: string
+    finishedAt: string
+    detectedStack: Record<string, unknown>
+  }
+  findings: SyncFinding[]
+  summary: string
+  tokenUsage?: { input: number; output: number; model: string }
+}
+
+export interface FindingsSyncResponse {
+  project: { id: string; created: boolean }
+  run: { id: string; status: 'done'; dashboardUrl: string }
+  findings: { created: number; deduplicated: number }
+  billing: { creditConsumed: boolean; runsRemaining: number }
+}

@@ -1,15 +1,15 @@
 {
   "name": "@finishkit/sdk",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "TypeScript SDK for the FinishKit API - scan GitHub repos with LLM analysis, get prioritized findings and patches for AI-built web apps",
   "homepage": "https://finishkit.app",
   "author": "FinishKit <support@finishkit.app>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FinishKit/sdk.git"
+    "url": "git+https://github.com/FinishKit/finishkit-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/FinishKit/sdk/issues"
+    "url": "https://github.com/FinishKit/finishkit-sdk/issues"
   },
   "keywords": [
     "finishkit",

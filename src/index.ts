@@ -1,10 +1,12 @@
 import { ApiClient } from './client.js'
+import { IntelligenceResource } from './resources/intelligence.js'
 import { ProjectsResource } from './resources/projects.js'
 import { RunsResource } from './resources/runs.js'
 import { scan } from './scan.js'
 import type { FinishKitOptions, ScanOptions, ScanResult } from './types.js'
 
 export class FinishKit {
+  readonly intelligence: IntelligenceResource
   readonly projects: ProjectsResource
   readonly runs: RunsResource
   private readonly client: ApiClient
@@ -16,6 +18,7 @@ export class FinishKit {
       )
     }
     this.client = new ApiClient(apiKey, baseUrl)
+    this.intelligence = new IntelligenceResource(this.client)
     this.projects = new ProjectsResource(this.client)
     this.runs = new RunsResource(this.client)
   }
